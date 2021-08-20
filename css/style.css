@@ -1,0 +1,168 @@
+
+body {
+}
+
+a, a:visited {
+    color: #333;
+}
+
+#banner-section {
+    padding-top: 20px;
+    width: 980px;
+    border-left: 2px #ddd solid;
+    border-right: 2px #ddd solid;
+}
+
+#data-viz-section, #control-section {
+    padding-top: 20px;
+    width: 980px;
+    border-left: 2px #ddd solid;
+    border-right: 2px #ddd solid;
+}
+
+header {
+    padding: 10px;
+}
+
+#book-title {
+    font-family: georgia, "times new roman", times, serif;
+    color: #555;
+    font-size: 2.3em;
+    text-align: center;
+}
+
+#text-select {
+    float: right;
+    margin-right: 10px;
+}
+
+#bubble-cloud {
+    overflow: hidden;
+    position: relative;
+}
+
+#selections {
+    padding: 0 0 20px 20px;
+    min-height: 40px;
+}
+
+.selection-item {
+    margin: 2px 5px 0px 0px;
+    float: left;
+}
+
+#controls {
+    padding: 20px;
+    background-color: #eee;
+    margin: 10px;
+    width: 350px;
+}
+
+#bubble-background {
+    fill: none;
+    pointer-events: all;
+}
+
+.bubble-node {
+    fill: #D0DFF2;
+}
+
+.bubble-hover {
+    fill: #5A9BCA;
+    fill-opacity: 0.8;
+}
+
+.bubble-selected {
+    fill: #679000;
+    stroke: #679000;
+    stroke-width: 1.5px;
+}
+
+.bubble-selected.parent-node {
+    fill: #E28100;
+    stroke: #E28100;
+    stroke-width: 1.5px;
+}
+
+.bubble-label-selected.parent-node {
+    color: #ffffff;
+}
+
+.bubble-masked {
+    fill: #cccccc;
+    fill-opacity: 0.8;
+}
+
+.bubble-masked-hover {
+    fill: #5A9BCA;
+    fill-opacity: 0.8;
+}
+
+.active {
+    color: #A6BA92;
+}
+
+a.bubble-label {
+    font-family: georgia, "times new roman", times, serif;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1em;
+    position: absolute;
+}
+
+.bubble-label .bubble-label-name {
+    text-transform: lowercase;
+}
+
+.bubble-label .bubble-label-value {
+    font: 12px sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+
+}
+
+/*footer p {*/
+/*text-align: center;*/
+/*padding-top: 20px;*/
+/*padding-bottom: 20px;*/
+/*font: 13px sans-serif;*/
+/*}*/
+
+.legend-group {
+    padding-right: 30px;
+    float: right;
+}
+
+.legend-item {
+    margin-right: 10px;
+    float: right;
+}
+
+.legend-rect {
+    height: 12px;
+    width: 12px;
+    float: left;
+    margin: 5px 8px 0px 0px;
+}
+
+.legend-rect.selected-children {
+    background-color: #679000;
+}
+
+.legend-rect.selected-parent {
+    background-color: #E28100;
+}
+
+.legend-rect.unrelated-peers {
+    background-color: #cccccc;
+}
+
+.legend-label {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #525252;
+}
+

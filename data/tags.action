@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "170",
+      "parentId": "",
+      "tagId": "1",
+      "tagName": "ANOMALIES"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "510",
+      "parentId": "",
+      "tagId": "2",
+      "tagName": "ASSET ALLOCATION"
+    }
+  ]
+}
