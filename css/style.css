@@ -1,4 +1,3 @@
-
 body {
 }
 
@@ -6,18 +5,18 @@ a, a:visited {
     color: #333;
 }
 
-#banner-section {
+#buttonSection, #data-viz-section {
     padding-top: 20px;
     width: 980px;
-    border-left: 2px #ddd solid;
-    border-right: 2px #ddd solid;
+    margin-left: auto;
+    margin-right: auto;
+    /*border-left: 1px #ddd solid;*/
+    /*border-right: 1px #ddd solid;*/
 }
 
-#data-viz-section, #control-section {
-    padding-top: 20px;
-    width: 980px;
-    border-left: 2px #ddd solid;
-    border-right: 2px #ddd solid;
+#data-viz-section {
+    padding-top: 0;
+    height: 540px;
 }
 
 header {
@@ -47,7 +46,7 @@ header {
 }
 
 .selection-item {
-    margin: 2px 5px 0px 0px;
+    margin: 2px 5px 0 0;
     float: left;
 }
 
@@ -73,23 +72,21 @@ header {
 }
 
 .bubble-selected {
-    fill: #679000;
-    stroke: #679000;
+    stroke: #bab7ac;
     stroke-width: 1.5px;
 }
 
 .bubble-selected.parent-node {
-    fill: #E28100;
     stroke: #E28100;
     stroke-width: 1.5px;
 }
 
 .bubble-label-selected.parent-node {
-    color: #ffffff;
+    color: #919191;
 }
 
 .bubble-masked {
-    fill: #cccccc;
+    /*fill: #cccccc;*/
     fill-opacity: 0.8;
 }
 
@@ -124,13 +121,6 @@ a.bubble-label {
 
 }
 
-/*footer p {*/
-/*text-align: center;*/
-/*padding-top: 20px;*/
-/*padding-bottom: 20px;*/
-/*font: 13px sans-serif;*/
-/*}*/
-
 .legend-group {
     padding-right: 30px;
     float: right;
@@ -145,11 +135,11 @@ a.bubble-label {
     height: 12px;
     width: 12px;
     float: left;
-    margin: 5px 8px 0px 0px;
+    margin: 5px 8px 0 0;
 }
 
 .legend-rect.selected-children {
-    background-color: #679000;
+    background-color: #bab7ac;
 }
 
 .legend-rect.selected-parent {
@@ -165,4 +155,3 @@ a.bubble-label {
     font-size: 12px;
     color: #525252;
 }
-

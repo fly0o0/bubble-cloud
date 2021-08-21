@@ -1,0 +1,645 @@
+{
+  "records": [
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "304",
+      "parentId": "",
+      "refs": [],
+      "tagId": "1",
+      "tagName": "Anomalies",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "510",
+      "parentId": "",
+      "refs": [],
+      "tagId": "2",
+      "tagName": "Asset Allocation",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "510",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "3",
+      "tagName": "Investor Behavior",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "170",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "4",
+      "tagName": "Liquidity",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "175",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "6",
+      "tagName": "Risk Management",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "266",
+      "parentId": "13",
+      "refs": [],
+      "tagId": "20",
+      "tagName": "Theory",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "134",
+      "parentId": "",
+      "refs": [],
+      "tagId": "22",
+      "tagName": "Credit Risk",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "94",
+      "parentId": "22",
+      "refs": [],
+      "tagId": "24",
+      "tagName": "Econometrics",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "225",
+      "parentId": "26",
+      "refs": [],
+      "tagId": "27",
+      "tagName": "Information Asymmetries",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "215",
+      "parentId": "26",
+      "refs": [],
+      "tagId": "28",
+      "tagName": "Policy",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "50",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "29",
+      "tagName": "Experimental",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "119",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "30",
+      "tagName": "Short-Interest",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "356",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "31",
+      "tagName": "Option Pricing",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "86",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "32",
+      "tagName": "Manager Selection (Hedge Funds)",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "Y",
+      "children": [],
+      "nbArticles": "70",
+      "parentId": "2",
+      "refs": [],
+      "tagId": "33",
+      "tagName": "Market Dynamics And Pricing Factor",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "50",
+      "parentId": "",
+      "refs": [],
+      "tagId": "34",
+      "tagName": "Manager",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "145",
+      "parentId": "",
+      "refs": [],
+      "tagId": "35",
+      "tagName": "Other",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "47",
+      "parentId": "",
+      "refs": [],
+      "tagId": "36",
+      "tagName": "Trading Strategy",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "N",
+      "children": [],
+      "nbArticles": "21",
+      "parentId": "",
+      "refs": [],
+      "tagId": "37",
+      "tagName": "SSGM-RA",
+      "tagType": "topic"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "586",
+      "parentId": "",
+      "refs": [],
+      "tagId": "1",
+      "tagName": "Portfolio",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "80",
+      "parentId": "",
+      "refs": [],
+      "tagId": "2",
+      "tagName": "Return",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "80",
+      "parentId": "",
+      "refs": [],
+      "tagId": "3",
+      "tagName": "Card",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "450",
+      "parentId": "",
+      "refs": [],
+      "tagId": "4",
+      "tagName": "Journal",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "350",
+      "parentId": "",
+      "refs": [],
+      "tagId": "5",
+      "tagName": "Credit",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "280",
+      "parentId": "",
+      "refs": [],
+      "tagId": "6",
+      "tagName": "Market",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "473",
+      "parentId": "",
+      "refs": [],
+      "tagId": "7",
+      "tagName": "Fund",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "100",
+      "parentId": "",
+      "refs": [],
+      "tagId": "8",
+      "tagName": "Asset",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "26",
+      "parentId": "",
+      "refs": [],
+      "tagId": "9",
+      "tagName": "Stocks",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "26",
+      "parentId": "",
+      "refs": [],
+      "tagId": "10",
+      "tagName": "Coefficient",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "50",
+      "parentId": "",
+      "refs": [],
+      "tagId": "15",
+      "tagName": "Etf",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "130",
+      "parentId": "",
+      "refs": [],
+      "tagId": "17",
+      "tagName": "Currency",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "135",
+      "parentId": "",
+      "refs": [],
+      "tagId": "19",
+      "tagName": "Crisis",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "135",
+      "parentId": "",
+      "refs": [],
+      "tagId": "20",
+      "tagName": "Excess",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "163",
+      "parentId": "",
+      "refs": [],
+      "tagId": "21",
+      "tagName": "Short",
+      "tagType": "popularword"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "888",
+      "parentId": "",
+      "refs": [],
+      "tagId": "0",
+      "tagName": "Commodities",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "76",
+      "parentId": "",
+      "refs": [],
+      "tagId": "1",
+      "tagName": "Derivaties",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "861",
+      "parentId": "",
+      "refs": [],
+      "tagId": "2",
+      "tagName": "Equities",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "793",
+      "parentId": "",
+      "refs": [
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Hungary",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "789",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Others",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Poland",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Germany",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "France",
+          "tagType": ""
+        },{
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Poland",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Germany",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "France",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Poland",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "XXXXXXXGermany",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "XXXXXXXFrance",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "XXXXXXXXXXXXX",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "France",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "Poland",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "XXXXXXXGermany",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "XXXXXXXFrance",
+          "tagType": ""
+        },
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "1",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "safsdfsfsd",
+          "tagType": ""
+        }
+      ],
+      "tagId": "3",
+      "tagName": "Europe",
+      "tagType": "region"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "276",
+      "parentId": "",
+      "refs": [],
+      "tagId": "4",
+      "tagName": "FX",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "4",
+      "parentId": "",
+      "refs": [],
+      "tagId": "5",
+      "tagName": "Fixed Income",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "1",
+      "parentId": "",
+      "refs": [],
+      "tagId": "6",
+      "tagName": "Mutual Funds",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "328",
+      "parentId": "",
+      "refs": [],
+      "tagId": "7",
+      "tagName": "Other",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "2",
+      "parentId": "",
+      "refs": [],
+      "tagId": "8",
+      "tagName": "Real Estate",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "1",
+      "parentId": "",
+      "refs": [],
+      "tagId": "9",
+      "tagName": "Security Lending",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "2",
+      "parentId": "",
+      "refs": [],
+      "tagId": "10",
+      "tagName": "Theory",
+      "tagType": "assetclass"
+    },
+    {
+      "childFl": "",
+      "children": [],
+      "nbArticles": "783",
+      "parentId": "",
+      "refs": [
+        {
+          "childFl": "",
+          "children": [],
+          "nbArticles": "783",
+          "parentId": "",
+          "refs": [],
+          "tagId": "",
+          "tagName": "US",
+          "tagType": ""
+        }
+      ],
+      "tagId": "11",
+      "tagName": "US",
+      "tagType": "region"
+    }
+  ]
+}

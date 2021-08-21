@@ -1,0 +1,717 @@
+body {
+  font-family: "dinotlight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+body .min-width {
+  min-width: 980px;
+}
+body i.fa {
+  cursor: pointer;
+}
+body input[type="button"] {
+  background-color: #62C0DF;
+  background-image: none;
+  border-color: #7399c6;
+  border-radius: 2px;
+  border-style: none;
+  box-shadow: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  text-transform: inherit;
+  width: 100px;
+  height: 31px;
+}
+body input[type="button"]:hover,
+body button.btn-primary:hover {
+  background-color: #002c5f;
+}
+body div.scan {
+  min-width: 980px;
+}
+body div.scan .section {
+  min-width: 980px;
+}
+body div.scan .header {
+  z-index: 99999;
+}
+body div.scan .header .primaryNavTitle {
+  line-height: 24px !important;
+}
+body div.scan #searchPanel {
+  margin-top: 60px;
+  min-height: 104px;
+  padding: 0;
+  background-color: #FBF8F3;
+  position: relative;
+}
+body div.scan #searchPanel #searchMenu {
+  padding: 10px 0 20px;
+  margin: 0 auto;
+  min-height: 60px;
+  height: auto;
+}
+body div.scan #searchPanel #searchMenu label {
+  display: block;
+  color: #3E6187;
+  margin-bottom: 8px;
+}
+body div.scan #searchPanel #searchMenu #searchInput {
+  color: #919191;
+  line-height: 34px;
+  min-height: 34px;
+  margin-right: 10px;
+  width: 100%;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags {
+  float: left;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div {
+  display: inline;
+  float: left;
+  margin: 0 2px;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div i {
+  margin-left: 6px;
+  margin-top: 8px;
+  position: absolute;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div input[type="button"] {
+  border-radius: 4px;
+  color: #919191;
+  height: 26px;
+  line-height: 26px;
+  text-indent: 16px;
+  padding-right: 6px;
+  max-width: 570px;
+  width: auto;
+  overflow: hidden;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div input[type="button"].assetclass {
+  background-color: #F9D7BC;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div input[type="button"].region {
+  background-color: #DBE892;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div input[type="button"].popularword {
+  background-color: #C7EDF8;
+}
+body div.scan #searchPanel #searchMenu #searchInput #searchTags > div input[type="button"].topic {
+  background-color: #FCE499;
+}
+body div.scan #searchPanel #searchMenu .button-group button {
+  margin-right: 10px;
+}
+body div.scan #searchPanel #tagCloud {
+  background-color: #FBF8F3;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group {
+  padding-right: 30px;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item {
+  margin-right: 10px;
+  float: right;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item .legend-rect {
+  height: 12px;
+  width: 12px;
+  float: left;
+  margin: 5px 8px 0 0;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item .legend-rect.region {
+  background-color: #DBE892;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item .legend-rect.assetclass {
+  background-color: #F9D7BC;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item .legend-rect.topic {
+  background-color: #FCE499;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item .legend-rect.popularword {
+  background-color: #C7EDF8;
+}
+body div.scan #searchPanel #tagCloud .chart-legend .legend-group .legend-item .legend-label {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #525252;
+}
+body div.scan #searchPanel #tagCloud .chart-legend > div {
+  margin-right: 10px;
+  display: inline-block;
+}
+body div.scan #searchPanel #tagCloud .chart-legend > div > i {
+  margin: 3px 0 0 3px;
+  position: absolute;
+}
+body div.scan #searchPanel #tagCloud .chart-legend > div > span {
+  margin-left: 14px;
+  position: absolute;
+}
+body div.scan #searchPanel #tagCloud .chart-menu .source-label {
+  margin-top: 8px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+body div.scan #searchPanel #tagCloud .chart-area {
+  width: 980px;
+  min-height: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud {
+  overflow: hidden;
+  position: relative;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes .bubble-hide {
+  display: none;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes #bubble-background {
+  fill: none;
+  pointer-events: all;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-node {
+  fill: #D0DFF2;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-node.assetclass {
+  fill: #F9D7BC;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-node.region {
+  fill: #DBE892;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-node.popularword {
+  fill: #C7EDF8;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-node.topic {
+  fill: #FCE499;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-hover {
+  fill: #5A9BCA;
+  fill-opacity: 0.8;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-nodes a.bubble-selected {
+  stroke: #679000;
+  stroke-width: 1.5px;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-labels a.bubble-label {
+  /*font-family: georgia, "times new roman", times, serif;*/
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1em;
+  position: absolute;
+  outline: none;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-labels a.bubble-label.bubble-hide {
+  display: none;
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-labels a.bubble-label .bubble-label-name {
+  /*text-transform: lowercase;*/
+}
+body div.scan #searchPanel #tagCloud .chart-area #bubble-cloud #bubble-labels a.bubble-label .bubble-label-value {
+  /*font-weight: bold;*/
+  white-space: nowrap;
+}
+body div.scan #searchResult {
+  position: relative;
+}
+body div.scan #searchResult input.alignH {
+  height: 26px;
+  line-height: 14px;
+  width: 180px;
+  border-radius: 0 0 9px 9px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0 auto;
+}
+body div.scan #searchResult p.tips-table {
+  color: #37587F;
+  font-size: 18px;
+}
+body div.scan #searchResult #table_wrapper,
+body div.scan #searchResult p.tips-table,
+body div.scan #searchResult #legend_bar {
+  margin: 0 auto;
+  width: 980px;
+}
+body div.scan #searchResult #table_wrapper {
+  margin-top: 10px;
+}
+body div.scan #searchResult #table_wrapper #table_info {
+  padding-top: 0;
+}
+body div.scan #searchResult #table_wrapper #table_filter label {
+  margin-bottom: 8px;
+}
+body div.scan #searchResult #table_wrapper #table_filter label input {
+  height: 30px;
+  border: 1px solid #ABADB3;
+  margin-left: 8px;
+}
+body div.scan #searchResult #table_wrapper #table_filter button {
+  margin-left: 35px;
+  height: 30px;
+}
+body div.scan #searchResult #table_wrapper #table {
+  width: auto;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 14px;
+  line-height: 120%;
+}
+body div.scan #searchResult #table_wrapper #table .center {
+  text-align: center;
+}
+body div.scan #searchResult #table_wrapper #table td {
+  padding: 6px 6px;
+  text-align: left;
+  word-wrap: break-word;
+}
+body div.scan #searchResult #table_wrapper #table thead tr th {
+  box-sizing: content-box;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-head > th {
+  background-color: #EDEDED;
+  border-bottom: 1px solid #696969;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td {
+  padding: 0;
+  border-bottom: none;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.title div,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.author div,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.tags div,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.date div {
+  width: 100%;
+  padding: 0 5px;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.title div input,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.author div input,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.tags div input,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.date div input {
+  width: 100%;
+  border: 1px solid #696969;
+  border-radius: 0;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.title div input.active,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.author div input.active,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.tags div input.active,
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td.date div input.active {
+  border: 1px solid #FF9900;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td:nth-child(5),
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td:nth-child(6),
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td:nth-child(8) {
+  font: 16px "dinotlight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td .th-filter {
+  font-size: 11px;
+}
+body div.scan #searchResult #table_wrapper #table thead tr.col-filter > td ul.multiselect-container > li {
+  height: 26px;
+}
+body div.scan #searchResult #table_wrapper #table tbody {
+  color: #878889;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td:first-child {
+  padding-left: 34px;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td:first-child .arrow {
+  color: #75c6e1;
+  margin: 0 0 0 -25px;
+  position: absolute;
+  font-size: 18px;
+  display: block;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td:nth-child(5),
+body div.scan #searchResult #table_wrapper #table tbody tr td:nth-child(6) {
+  color: #F4C236;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td:nth-child(4):hover {
+  text-decoration: underline;
+  color: #75c6e1;
+  cursor: pointer;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr.odd {
+  background: #EFF3FA !important;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr.even {
+  background-color: #ffffff !important;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr.selected,
+body div.scan #searchResult #table_wrapper #table tbody tr:hover {
+  background-color: #CEDBEF !important;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details {
+  background-color: #EDEDED;
+  /*border: 2px solid #696969;*/
+  border-bottom: 2px solid #696969;
+  border-left: 2px solid #696969;
+  border-right: 2px solid #696969;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details table {
+  margin: 0 10px;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details table tbody tr {
+  background-color: #EDEDED;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details table tbody tr:hover {
+  background-color: #EDEDED !important;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details table tbody tr.selected {
+  background-color: #CEDBEF;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details table tbody tr td {
+  border-top: none !important;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.details table tbody tr td.detailTitle {
+  width: 100px;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td.textAdjust {
+  word-break: break-all;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td p {
+  margin: 0 0 10px;
+}
+body div.scan #searchResult #table_wrapper #table tbody tr td:nth-child(5),
+body div.scan #searchResult #table_wrapper #table tbody tr td:nth-child(6),
+body div.scan #searchResult #table_wrapper #table tbody tr td:nth-child(8) {
+  font: 16px "dinotlight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+body div.scan #searchResult #table_wrapper #table tfoot th {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+body div.publication #commandSection {
+  margin-top: 57px;
+  min-height: 104px;
+  background-color: #EEF5FA;
+  position: relative;
+}
+body div.publication #commandSection #commandInner {
+  margin: 0 auto;
+  display: table;
+  width: 980px;
+}
+body div.publication #commandSection #commandInner #sortTitle {
+  color: #002c5f;
+  font-size: 14px;
+  margin: 9px 0;
+}
+body div.publication #commandSection #commandInner div.selecter {
+  width: 150px;
+  margin-right: 20px;
+  display: inline-block;
+}
+body div.publication #commandSection #commandInner div.selecter span.selecter-selected {
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+body div.publication #commandSection #commandInner div.selecter div.selecter-options span.selecter-item {
+  padding: 3px 10px;
+}
+body div.publication #commandSection #commandInner i.i-grid {
+  color: #FFFFFF;
+  margin: 8px 0 0 10px;
+  position: absolute;
+}
+body div.publication #commandSection #commandInner i.i-list {
+  color: #FFFFFF;
+  margin: 7px 0 0 8px;
+  position: absolute;
+}
+body div.publication #commandSection #commandInner input[type="button"].left {
+  border-radius: 8px 0 0 8px;
+}
+body div.publication #commandSection #commandInner input[type="button"].right {
+  border-radius: 0 8px 8px 0;
+}
+body div.publication #commandSection #commandInner input[type="button"].left,
+body div.publication #commandSection #commandInner input[type="button"].right {
+  width: 31px;
+  padding: 0;
+  height: 31px;
+  vertical-align: top;
+}
+body div.publication #commandSection #commandInner input[type="button"].selected {
+  background-color: #CCCCCC;
+}
+body div.publication #commandSection #commandInner input[type="button"].unselected {
+  background-color: #002C5F;
+}
+body div.publication #commandSection #commandInner #rightBtnPanel {
+  float: right;
+}
+body div.publication #commandSection #commandInner #rightBtnPanel .i-save {
+  position: absolute;
+  margin: 10px 0 0 14px;
+  color: #FFFFFF;
+}
+body div.publication #commandSection #commandInner #rightBtnPanel input.unselected,
+body div.publication #commandSection #commandInner #rightBtnPanel i.unselected {
+  color: #317CA1;
+  background-color: #EEF5FA;
+}
+body div.publication #commandSection #commandInner #rightBtnPanel #saveSearch,
+body div.publication #commandSection #commandInner #rightBtnPanel #print {
+  text-indent: 18px;
+  height: 35px;
+}
+body div.publication #commandSection #commandInner #rightBtnPanel #saveSearch {
+  width: 150px;
+}
+body div.publication #commandSection #commandInner #rightBtnPanel #print {
+  width: 100px;
+}
+body div.publication #resultSection {
+  background-color: #FBF8F3;
+}
+body div.publication #resultSection #result {
+  width: 980px;
+  margin: 0 auto;
+  display: table;
+}
+body div.publication #resultSection #result #listLeft,
+body div.publication #resultSection #result #gridLeft {
+  float: left;
+  width: 78%;
+  height: 100%;
+  background-color: #FFFFFF;
+  margin-top: 30px;
+}
+body div.publication #resultSection #result #listLeft p.storyBoard .author,
+body div.publication #resultSection #result #gridLeft p.storyBoard .author {
+  color: #4C8DAE;
+  margin-left: 5px;
+}
+body div.publication #resultSection #result #listLeft div.rate,
+body div.publication #resultSection #result #gridLeft div.rate {
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 10px;
+}
+body div.publication #resultSection #result #listLeft div.rate i.light,
+body div.publication #resultSection #result #gridLeft div.rate i.light {
+  color: #ffad24;
+}
+body div.publication #resultSection #result #listLeft div.rate i.gray,
+body div.publication #resultSection #result #gridLeft div.rate i.gray {
+  color: #919191;
+}
+body div.publication #resultSection #result #listLeft div.sharePanel,
+body div.publication #resultSection #result #gridLeft div.sharePanel {
+  padding-left: 14px;
+}
+body div.publication #resultSection #result #listLeft div.sharePanel .share,
+body div.publication #resultSection #result #gridLeft div.sharePanel .share {
+  background-color: #FFFFFF;
+  color: #4C8DAE;
+}
+body div.publication #resultSection #result #listLeft .i-plus,
+body div.publication #resultSection #result #gridLeft .i-plus {
+  color: #FFFFFF;
+}
+body div.publication #resultSection #result #listLeft .i-share,
+body div.publication #resultSection #result #gridLeft .i-share {
+  color: #317CA1;
+}
+body div.publication #resultSection #result #listLeft .add,
+body div.publication #resultSection #result #gridLeft .add,
+body div.publication #resultSection #result #listLeft .share,
+body div.publication #resultSection #result #gridLeft .share {
+  width: auto;
+  text-indent: 20px;
+}
+body div.publication #resultSection #result #listLeft div.itemList,
+body div.publication #resultSection #result #gridLeft div.itemList {
+  display: table;
+  height: auto;
+  background-color: #FFFFFF;
+  margin-bottom: 10px;
+}
+body div.publication #resultSection #result #listLeft div.itemList h3,
+body div.publication #resultSection #result #gridLeft div.itemList h3 {
+  color: #317CA1;
+  margin-left: 20px;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem {
+  width: 75%;
+  float: left;
+  padding-left: 20px;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem p.desc,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem p.desc {
+  color: #737373;
+  padding: 15px 0 15px 0;
+  margin: 0;
+  border-bottom: 1px solid #cccccc;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem p.desc a,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem p.desc a {
+  color: #76A8C0;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem p.desc i,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem p.desc i {
+  color: #317CA1;
+  margin: 3px 0 0 5px;
+  position: absolute;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem ul.abstract,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem ul.abstract {
+  padding: 15px 0 15px 0;
+  border-bottom: 1px solid #cccccc;
+  list-style: none;
+  margin: 0;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem ul.abstract li,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem ul.abstract li {
+  padding: 0 5px;
+  display: inline;
+  color: #317CA1;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem ul.abstract li:not(:first-child),
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem ul.abstract li:not(:first-child) {
+  border-left: 1px solid #317CA1;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem div.tags,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem div.tags {
+  padding: 20px 0 20px 0;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem div.tags div.tag,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem div.tags div.tag {
+  display: inline-block;
+  margin-right: 5px;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem div.tags div.tag i,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem div.tags div.tag i {
+  color: #62C0DF;
+  position: absolute;
+  margin: 6px 0 0 9px;
+}
+body div.publication #resultSection #result #listLeft div.itemList div.pubItem div.tags div.tag input,
+body div.publication #resultSection #result #gridLeft div.itemList div.pubItem div.tags div.tag input {
+  border: 1px solid #67C2E0;
+  border-radius: 20px;
+  color: #A2A2A2;
+  background-color: #FFFFFF;
+  text-indent: 20px;
+  height: 25px;
+  width: auto;
+}
+body div.publication #resultSection #result #listLeft div.itemList .pubOpt,
+body div.publication #resultSection #result #gridLeft div.itemList .pubOpt {
+  width: 25%;
+  float: right;
+}
+body div.publication #resultSection #result #listLeft div.itemList .pubOpt a,
+body div.publication #resultSection #result #gridLeft div.itemList .pubOpt a {
+  display: block;
+  text-align: center;
+}
+body div.publication #resultSection #result #listLeft div.itemList .pubOpt div.addPanel,
+body div.publication #resultSection #result #gridLeft div.itemList .pubOpt div.addPanel {
+  text-align: center;
+  margin: 50px 0 15px;
+  position: relative;
+}
+body div.publication #resultSection #result #listLeft div.itemList .pubOpt div.addPanel i,
+body div.publication #resultSection #result #gridLeft div.itemList .pubOpt div.addPanel i {
+  position: absolute;
+  left: 20px;
+  top: 7px;
+}
+body div.publication #resultSection #result #listLeft div.itemList .pubOpt div.sharePanel i,
+body div.publication #resultSection #result #gridLeft div.itemList .pubOpt div.sharePanel i {
+  position: absolute;
+  margin: 9px 0 0 5px;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid,
+body div.publication #resultSection #result #gridLeft div.itemGrid {
+  width: 33%;
+  display: inline-block;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #CCCCCC;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid a,
+body div.publication #resultSection #result #gridLeft div.itemGrid a {
+  display: block;
+  text-align: center;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid h4,
+body div.publication #resultSection #result #gridLeft div.itemGrid h4 {
+  color: #317CA1;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid p.storyBoard,
+body div.publication #resultSection #result #gridLeft div.itemGrid p.storyBoard {
+  margin-left: 20px;
+  margin-right: 10px;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid div.rate,
+body div.publication #resultSection #result #gridLeft div.itemGrid div.rate {
+  border-bottom: 0;
+  margin-left: 20px;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid div.addPanel,
+body div.publication #resultSection #result #gridLeft div.itemGrid div.addPanel,
+body div.publication #resultSection #result #listLeft div.itemGrid div.sharePanel,
+body div.publication #resultSection #result #gridLeft div.itemGrid div.sharePanel {
+  margin-left: 20px;
+  padding: 0;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid div.addPanel i,
+body div.publication #resultSection #result #gridLeft div.itemGrid div.addPanel i,
+body div.publication #resultSection #result #listLeft div.itemGrid div.sharePanel i,
+body div.publication #resultSection #result #gridLeft div.itemGrid div.sharePanel i {
+  position: absolute;
+  margin: 9px 0 0 5px;
+}
+body div.publication #resultSection #result #listLeft div.itemGrid div.sharePanel,
+body div.publication #resultSection #result #gridLeft div.itemGrid div.sharePanel {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+body div.publication #resultSection #result #resultRight {
+  float: right;
+  width: 20%;
+  height: 100%;
+  margin-top: 30px;
+}
+body div.publication #resultSection #result #resultRight table thead td:nth-child(1) {
+  width: 80%;
+}
+body div.publication #resultSection #result #resultRight table thead td:nth-child(2) {
+  width: 20%;
+}
+body div.publication #resultSection #result #resultRight table tbody tr td {
+  padding: 20px 0 20px 0;
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC;
+}
+body div.publication #resultSection #result #resultRight table tbody tr td:nth-child(2) {
+  text-align: right;
+}
+body div.publication #resultSection #result #resultRight table tbody tr td:nth-child(2) i {
+  color: #62C0DF;
+}
+body #footer {
+  background-color: #FBF8F3;
+}

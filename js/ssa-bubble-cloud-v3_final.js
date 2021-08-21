@@ -26,12 +26,10 @@ window.BubbleCloud = function (config) {
     var isMergePending = false;
     var isMergeDone = false;
     var isActiveDragEvent = false;
-    var mergeNodes, demergeNodes, showSubRegions, hideSubRegions, toggleRegions;
+    var mergeNodes, demergeNodes, showRegions, hideRegions, toggleRegions;
     var mergeMap = [];      //
     var prevNodeLoc = {id: null, x: null, y: null};   // previous location of the dragged node
 
-    var CONST_COMMA = ',', CONST_SPACE = ' ', CONST_PLUS = '(+)', CONST_MINUS = '(-)',
-        CONST_REGION = 'region';
 
     var margin = {
         top: 5,
@@ -85,9 +83,9 @@ window.BubbleCloud = function (config) {
     };
 
     var rValue = function (d) {
-        //if (d.isSatelliteNode) {
-        //    return d.onlyToCalRadius;
-        //}
+        if (d.isSatelliteNode) {
+            return d.onlyToCalRadius;
+        }
 
         return d.count;
     };
@@ -125,12 +123,7 @@ window.BubbleCloud = function (config) {
         rawData.forEach(function (d) {
             d.count = parseInt(d.nbArticles);
             d.title = d.tagName;    // tooltip
-            if (d.tagType === CONST_REGION) {
-                d.name = d.tagName + CONST_SPACE + CONST_PLUS;     // display name
-            } else {
-                d.name = d.tagName;     // display name
-            }
-
+            d.name = d.tagName;     // display name
             d.value = d.tagName;    // real value
             d.type = d.tagType;
             d.id = d.type + '-' + d.tagId;
@@ -157,7 +150,7 @@ window.BubbleCloud = function (config) {
         var dampenedAlpha;
         dampenedAlpha = e.alpha * 0.1;
         nodes.each(gravity(dampenedAlpha)).each(collide(jitter)).attr('transform', function (d) {
-            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
+            return 'translate(' + d.x + ',' + d.y + ')';
         });
         return labels.style('left', function (d) {
             return ((margin.left + d.x) - d.dx / 2) + 'px';
@@ -174,21 +167,16 @@ window.BubbleCloud = function (config) {
     dragTick = function () {
         // reposition the node/circle
         nodes.attr('transform', function (d) {
-            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
+            return 'translate(' + d.x + ',' + d.y + ')';
         });
 
         nodes.each(collideV2(jitter));
-        return labels.style('left', function (d) {
-            return ((margin.left + d.x) - d.dx / 2) + 'px';
-        }).style('top', function (d) {
-            return ((margin.top + d.y) - d.dy / 2) + 'px';
-        });
     };
 
     positionRegions = function () {
         // reposition the node/circle
         nodes.attr('transform', function (d) {
-            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
+            return 'translate(' + d.x + ',' + d.y + ')';
         });
         return labels.style('left', function (d) {
             return ((margin.left + d.x) - d.dx / 2) + 'px';
@@ -213,7 +201,7 @@ window.BubbleCloud = function (config) {
             svgEnter.attr('width', width + margin.left + margin.right);
             svgEnter.attr('height', height + margin.top + margin.bottom);
 
-            var nodesG = svgEnter.append('g').attr('id', 'bubble-nodes').attr('transform', 'translate(' + margin.left + CONST_COMMA + margin.top + ')');
+            var nodesG = svgEnter.append('g').attr('id', 'bubble-nodes').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             nodesG.append('rect').attr('id', 'bubble-background').attr('width', width).attr('height', height);
 
             var labelsG = d3.select(this).append('div').attr('id', 'bubble-labels');
@@ -249,7 +237,9 @@ window.BubbleCloud = function (config) {
             return d.id;
         });
 
-        var nodeEnter = nodes.enter().append('a').classed({
+        var nodeEnter = nodes.enter();
+
+        nodeEnter.append('a').classed({
             'bubble-node': true,
             'parent-node': function (d) {
                 return !parentIdValue(d);
@@ -261,7 +251,7 @@ window.BubbleCloud = function (config) {
                 return d.type.toLowerCase() === 'assetclass';
             },
             'region': function (d) {
-                return d.type.toLowerCase() === CONST_REGION;
+                return d.type.toLowerCase() === 'region';
             },
             'popularword': function (d) {
                 return d.type.toLowerCase() === 'popularword';
@@ -280,30 +270,16 @@ window.BubbleCloud = function (config) {
             return memberIds(d);
         }).attr('title', function (d) {
             return d.title;
-        }).call(force.drag).call(connectEvents);
-
-        nodeEnter.append('circle')
+        }).append('circle')
             .attr('class', 'node')
             .attr('r', function (d) {
                 return rScale(rValue(d));
-            });
+            }).call(connectEvents).call(drag);
 
         nodes.exit().remove();
     };
 
     updateLabels = function () {
-
-        function _getWordsArr(str, separator) {
-            return str.split(separator);
-        }
-
-        function _getSeparator(d) {
-            var separator = CONST_SPACE;
-            if (!!d.isMergedNode && d.name.indexOf(CONST_COMMA) !== -1) {
-                separator = CONST_COMMA;
-            }
-            return separator;
-        }
 
         labels = labels.data(data, function (d) {
             return d.id;
@@ -320,8 +296,66 @@ window.BubbleCloud = function (config) {
         }).attr('title', function (d) {
             return d.title;
         });
+        labelEnter.append('div').attr('class', 'bubble-label-name').html(function (d) {
 
-        labels.style('font-size', function (d) {
+            function breedTextToView(words, wordNum, lineBrokenNum, separator) {
+                var connectSymbol, resultText = '';
+                for (var i = 0; i < wordNum; i++) {
+
+                    if ((i + 1) % Math.floor(wordNum / lineBrokenNum) === 0) {
+                        connectSymbol = '<br>' + separator;
+                    } else {
+                        connectSymbol = ' ';
+                    }
+                    if (i === wordNum - 1) {
+                        resultText += words[i];
+                    } else {
+                        resultText += words[i] + connectSymbol;
+                    }
+                }
+                return resultText;
+            }
+
+            function breakWordsBubble(separator, d) {
+                var words = d.name.split(separator);
+                var wordNum = words.length;
+                var lineBrokenNum;
+                var wordText = '';
+
+                if (wordNum === 1) {
+                    wordText = words[0];
+                } else {
+                    if (1 < wordNum && wordNum < 6) {
+                        lineBrokenNum = 2;
+                    } else {
+                        lineBrokenNum = 3;
+                    }
+                    wordText = breedTextToView(words, wordNum, lineBrokenNum, separator);
+                }
+                return wordText;
+            }
+
+            var separator = ' ';
+            if (!!d.isMergedNode) {
+                separator = ',';
+            }
+            return breakWordsBubble(separator, d);
+        });
+        labelEnter.append('div').attr('class', 'bubble-label-value').text(function (d) {
+            return d.count;
+        });
+
+
+        labels.each(function (d) {
+            d.dx = d.dx || Math.max(2.5 * rScale(rValue(d)), this.getBoundingClientRect().width);
+            d.dy = d.dy || this.getBoundingClientRect().height;
+
+            return;
+        });
+
+        labels.style('width', function (d) {
+            return d.dx + 'px';
+        }).style('font-size', function (d) {
             //TODO: decrease the font size if it's a merged node
             var fsize = Math.max(8, rScale(rValue(d) / 6) / 1.5);
             if (!!d.isMergedNode) {
@@ -330,64 +364,6 @@ window.BubbleCloud = function (config) {
             return fsize + 'px';
         });
 
-        labelEnter.append('div').attr('class', 'bubble-label-name').html(function (d) {
-            var separator, wordNumEveryLine, words;
-
-            function _breedWordsToDisplay(words, wordNumEveryLine, separator) {
-                var connectSymbol, resultText = '', wordNum;
-                wordNum = words.length;
-                for (var i = 0; i < wordNum; i++) {
-
-                    if ((i + 1) % wordNumEveryLine === 0) {
-                        connectSymbol = '<br>' + separator;
-                    } else {
-                        connectSymbol = separator;
-                    }
-                    if (i === wordNum - 1) {
-                        resultText += words[i];
-                    } else {
-                        resultText += words[i] + connectSymbol;
-                    }
-                }
-
-                if (separator === CONST_COMMA) {
-                    resultText = resultText.replace(/\,\(\+\)/, CONST_SPACE + CONST_PLUS);
-                }
-
-                return resultText;
-            }
-
-            function _calWordNumEveryLine(words) {
-                var wordNum = words.length;
-                var wordNumEveryLine;
-
-                if (wordNum >= 1 && wordNum <= 3) {
-                    wordNumEveryLine = 1;
-                } else {
-                    wordNumEveryLine = 2;
-                }
-
-                return wordNumEveryLine;
-            }
-
-            separator = _getSeparator(d);
-            words = _getWordsArr(d.name, separator);
-            wordNumEveryLine = _calWordNumEveryLine(words);
-
-            return _breedWordsToDisplay(words, wordNumEveryLine, separator);
-        });
-        labelEnter.append('div').attr('class', 'bubble-label-value').text(function (d) {
-            return d.count;
-        });
-
-        labels.each(function (d) {
-            d.dx = this.getBoundingClientRect().width;
-            d.dy = this.getBoundingClientRect().height;
-        });
-
-        labels.style('width', function (d) {
-            return d.dx + 'px';
-        });
 
         labels.call(connectEvents).call(drag);
 
@@ -452,10 +428,9 @@ window.BubbleCloud = function (config) {
             selected: (!!target.selected || !!source.selected),
             // re-use the position of target node
             x: target.x,
-            y: target.y
-            //dx: Math.max(target.dx, source.dx),
-            //dy: target.dy
-            //remove set dx and dy, since after merge, the label width and height will re calculate in updateLabels
+            y: target.y,
+            dx: target.dx,
+            dy: target.dy
         };
 
         // set merged text
@@ -472,7 +447,7 @@ window.BubbleCloud = function (config) {
 
         nodeToAdd.title = names.join(LINE_BR);
         nodeToAdd.value = names.join('|');
-        nodeToAdd.name = _trimText(names.join(CONST_COMMA)) + CONST_COMMA + CONST_PLUS;
+        nodeToAdd.name = _trimText(names.join(','));
 
         data.push(nodeToAdd);
 
@@ -588,29 +563,23 @@ window.BubbleCloud = function (config) {
         var refs = node.refs;
         if (!!refs && refs.length !== 0) {
             if (node.isShowAll) {
-                hideSubRegions(node);
+                hideRegions(node);
             } else {
-                showSubRegions(node);
+                showRegions(node);
             }
         }
     };
 
 
-    showSubRegions = function (node) {
+    showRegions = function (node) {
         _log('show regions');
-        var region, index, nodeToAdd, point, angle = 0, mockCentralNode, rSmall,
-            //countForSatellite,
-            anglePadding = 4, rTraceCircle, centreAngle, maxArticles,
+        var region, index, nodeToAdd, point, angle = 0, mockCentralNode, rSmall, countForSatellite,
+            anglePadding = 4, rTraceCircle, centreAngle,
             refs = node.refs;
 
-        //countForSatellite = 100;
+        countForSatellite = 100;
 
         node.isShowAll = true;
-        node.name = node.name.replace(/\(\+\)/, CONST_MINUS);
-
-        d3.select(model.placeholder + ' [bubble-label-id="' + node.id + '"] > div:first-child').text(function () {
-            return node.name;
-        });
 
         // lock all the other nodes by disabling drag behavior temporarily
         nodes.on('mousedown.drag', null).classed('fixed', true);
@@ -634,8 +603,8 @@ window.BubbleCloud = function (config) {
 
         //data.push(mockCentralNode);
 
-        maxArticles = _findMaxArticles(refs);
-        rSmall = rScale(maxArticles);
+
+        rSmall = rScale(countForSatellite);
 
         rTraceCircle = _getRTraceCircle(rSmall, node.forceR);
 
@@ -666,10 +635,10 @@ window.BubbleCloud = function (config) {
                 isSatelliteNode: true,
                 // sum up all nodes
                 count: parseInt(region.nbArticles),
-                //onlyToCalRadius: countForSatellite,
+                onlyToCalRadius: countForSatellite,
                 id: region.id,
                 // display name
-                type: CONST_REGION,
+                type: 'region',
                 subType: 'country',
                 // the merged node gets selected if either source or target node was selected
                 selected: region.selected,
@@ -692,7 +661,7 @@ window.BubbleCloud = function (config) {
         force.on('tick', tick);
     };
 
-    hideSubRegions = function (node) {
+    hideRegions = function (node) {
         _log('hide regions');
         var index, region, actualRegionParentIndex, refs = node.refs;
 
@@ -700,11 +669,6 @@ window.BubbleCloud = function (config) {
         node = data[actualRegionParentIndex];
 
         node.isShowAll = false;
-        node.name = node.name.replace(/\(\-\)/, CONST_PLUS);
-        d3.select(model.placeholder + ' [bubble-label-id="' + node.id + '"] > div:first-child').text(function () {
-            return node.name;
-        });
-
         for (index = 0; index < refs.length; index++) {
             region = refs[index];
             _removeById(data, node.id + '_' + index);
@@ -736,23 +700,38 @@ window.BubbleCloud = function (config) {
 
     };
 
-    function _findMaxArticles(arr){
-        var max = 0, articleNum;
-        for(var i =0 ; i < arr.length; i++){
-            articleNum = parseInt(arr[i].nbArticles);
-            if(max < articleNum){
-                max = articleNum;
-            }
-        }
-        return max;
-    }
-
     function _getPoint(r, angle) {
         var RAD = Math.PI / 180;
         var rst = {};
         rst.x = r * Math.cos(angle * RAD);
         rst.y = r * Math.sin(angle * RAD);
         return rst;
+    }
+
+    /**
+     * Get distance from the chord to the centre
+     *
+     * rTraceCircle is the radius of small circle plus the radius of large circle and plus the padding
+     *
+     * a + b = rTraceCircle;
+     *
+     * a*a + x*x = rTraceCircle*rTraceCircle;
+     *
+     * b*b + x*x = rSmall*rSmall;
+     *
+     * x is chord length, a is distance from the chord to the centre of actual circle,
+     * b is distance from the chord to the centre of small circle
+     *
+     * @param rSmall
+     * the radius of small circle
+     * @param rTraceCircle
+     * rSmall + rLarge + padding
+     * @returns {number}
+     * distance from the chord to the centre
+     * @private
+     */
+    function _getDistanceChordToCentre(rSmall, rTraceCircle) {
+        return rTraceCircle - Math.pow(rSmall, 2) / (2 * rTraceCircle);
     }
 
     /**
@@ -766,32 +745,6 @@ window.BubbleCloud = function (config) {
      * @private
      */
     function _getCentreAngle(rSmall, rTraceCircle) {
-        /**
-         * Get distance from the chord to the centre
-         *
-         * rTraceCircle is the radius of small circle plus the radius of large circle and plus the padding
-         *
-         * a + b = rTraceCircle;
-         *
-         * a*a + x*x = rTraceCircle*rTraceCircle;
-         *
-         * b*b + x*x = rSmall*rSmall;
-         *
-         * x is chord length, a is distance from the chord to the centre of actual circle,
-         * b is distance from the chord to the centre of small circle
-         *
-         * @param rSmall
-         * the radius of small circle
-         * @param rTraceCircle
-         * rSmall + rLarge + padding
-         * @returns {number}
-         * distance from the chord to the centre
-         * @private
-         */
-        function _getDistanceChordToCentre(rSmall, rTraceCircle) {
-            return rTraceCircle - Math.pow(rSmall, 2) / (2 * rTraceCircle);
-        }
-
         var distanceChordToCentre;
 
         distanceChordToCentre = _getDistanceChordToCentre(rSmall, rTraceCircle);
@@ -892,14 +845,14 @@ window.BubbleCloud = function (config) {
             d.on('mouseover', mouseover);
             d.on('mouseout', mouseout);
         } else {
-            d.on('click', function () {
+            d.on('click', function(){
                 _log('enter empty click');
                 if (!d3.event) {
                     return;
                 }
                 return d3.event.preventDefault();
             });
-            d.on('dblclick', function () {
+            d.on('dblclick', function(){
                 _log('enter empty db-click');
                 if (!d3.event) {
                     return;
@@ -996,7 +949,7 @@ window.BubbleCloud = function (config) {
         var nodeId = d3.select(this).attr('bubble-label-id') || d3.select(this.parentNode).attr('id');
 
         // sync the label position
-        d3.select(model.placeholder + ' [bubble-label-id=' + nodeId + ']').style('left', function (d) {
+        d3.select('[bubble-label-id=' + nodeId + ']').style('left', function (d) {
             return ((margin.left + d.x) - d.dx / 2) + 'px';
         }).style('top', function (d) {
             return ((margin.top + d.y) - d.dy / 2) + 'px';
@@ -1030,7 +983,7 @@ window.BubbleCloud = function (config) {
             // starts a transition
             d3.select('#' + prevNodeLoc.id).attr('transform', function () {
                 //_log('reposition to [x: ' + prevNodeLoc.x + ', y: ' + prevNodeLoc.y);
-                return 'translate(' + prevNodeLoc.x + CONST_COMMA + prevNodeLoc.y + ')';
+                return 'translate(' + prevNodeLoc.x + ',' + prevNodeLoc.y + ')';
             });
 
             // sync the label position
@@ -1176,7 +1129,7 @@ window.BubbleCloud = function (config) {
             case 'assetclass':
                 icon = 'fa-dollar';
                 break;
-            case CONST_REGION:
+            case 'region':
                 icon = 'fa-globe';
                 break;
             case 'popularword':
@@ -1212,8 +1165,6 @@ var root = typeof exports !== 'undefined' && exports !== null ? exports : this;
 root.plotData = function (selector, data, plot) {
     return d3.select(selector).datum(data).call(plot);
 };
-
-
 d3.selection.prototype.first = function() {
     return d3.select(this[0][0]);
 };

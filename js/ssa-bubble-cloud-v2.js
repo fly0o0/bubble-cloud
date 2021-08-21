@@ -480,7 +480,7 @@ $(function () {
 
 //    var title = 'QLS Tag Cloud';
 //    var url = 'data/tagcloud.csv';
-    var actionUrl = 'data/tags.action';   // for local testing
+    var actionUrl = 'data/tags.json';   // for local testing
     //var actionUrl = '../action/getMasterTags.action';
 
     var plot = BubbleCloud();

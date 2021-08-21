@@ -11,7 +11,7 @@ window.BubbleCloud = function (config) {
     var nodes = null;
     var labels = null;
 
-    var tick, dragTick, positionRegions;
+    var tick, dragTick, locateRegions;
 
     var dblclick, dragstart, drag, draging, dragend, mouseover, mouseout; // event handlers
 
@@ -20,6 +20,8 @@ window.BubbleCloud = function (config) {
     var rawNodes = [];   // the original/complete copy of data
     var data = [];          // the current copy of data used to plot the chart
     var selectedNodes = [];  // selected data
+
+    var PointGenerator;
 
     var collideV2;
     var dragSourceNode, dropTargetNode;
@@ -31,7 +33,7 @@ window.BubbleCloud = function (config) {
     var prevNodeLoc = {id: null, x: null, y: null};   // previous location of the dragged node
 
     var CONST_COMMA = ',', CONST_SPACE = ' ', CONST_PLUS = '(+)', CONST_MINUS = '(-)',
-        CONST_REGION = 'region';
+        CONST_REGION = 'region', CONST_COUNTRY = 'country';
 
     var margin = {
         top: 5,
@@ -61,7 +63,6 @@ window.BubbleCloud = function (config) {
 
     var LINE_BR = ' or ';//'&#013;';
 
-    //rScale = d3.scale.sqrt().range([0, maxRadius]);
     var rScale;
 
     var init = function (config) {
@@ -85,10 +86,6 @@ window.BubbleCloud = function (config) {
     };
 
     var rValue = function (d) {
-        //if (d.isSatelliteNode) {
-        //    return d.onlyToCalRadius;
-        //}
-
         return d.count;
     };
 
@@ -125,8 +122,10 @@ window.BubbleCloud = function (config) {
         rawData.forEach(function (d) {
             d.count = parseInt(d.nbArticles);
             d.title = d.tagName;    // tooltip
-            if (d.tagType === CONST_REGION) {
-                d.name = d.tagName + CONST_SPACE + CONST_PLUS;     // display name
+            if (d.tagType === CONST_REGION && !!d.refs && d.refs.length !== 0) {
+
+                d.name = d.tagName + CONST_SPACE + CONST_PLUS;
+                // display name
             } else {
                 d.name = d.tagName;     // display name
             }
@@ -136,19 +135,27 @@ window.BubbleCloud = function (config) {
             d.id = d.type + '-' + d.tagId;
             d.selected = false;
 
-            //return rawData.sort(function () {
-            //    return 0.5 - Math.random();
-            //});
         });
 
         // save the raw data for future reference
         rawNodes = [].concat(rawData);
 
-        //_log('rawNodes.length: ' + rawNodes.length);
-
         return rawData;
     };
 
+    function _locateNodes() {
+        nodes.attr('transform', function (d) {
+            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
+        });
+    }
+
+    function _locateLabels(labels) {
+        return labels.style('left', function (d) {
+            return ((margin.left + d.x) - d.dx / 2) + 'px';
+        }).style('top', function (d) {
+            return ((margin.top + d.y) - d.dy / 2) + 'px';
+        });
+    }
 
     /**
      * the default force layout simulation one step
@@ -156,16 +163,11 @@ window.BubbleCloud = function (config) {
     tick = function (e) {
         var dampenedAlpha;
         dampenedAlpha = e.alpha * 0.1;
-        nodes.each(gravity(dampenedAlpha)).each(collide(jitter)).attr('transform', function (d) {
-            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
-        });
-        return labels.style('left', function (d) {
-            return ((margin.left + d.x) - d.dx / 2) + 'px';
-        }).style('top', function (d) {
-            return ((margin.top + d.y) - d.dy / 2) + 'px';
-        });
+        nodes.each(gravity(dampenedAlpha)).each(moveToParent(dampenedAlpha))
+            .each(collide(jitter));
+        _locateNodes();
+        return _locateLabels(labels);
     };
-
 
     /**
      * the dragging force layout simulation one step
@@ -173,28 +175,15 @@ window.BubbleCloud = function (config) {
      */
     dragTick = function () {
         // reposition the node/circle
-        nodes.attr('transform', function (d) {
-            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
-        });
-
+        _locateNodes();
         nodes.each(collideV2(jitter));
-        return labels.style('left', function (d) {
-            return ((margin.left + d.x) - d.dx / 2) + 'px';
-        }).style('top', function (d) {
-            return ((margin.top + d.y) - d.dy / 2) + 'px';
-        });
+        return _locateLabels(labels);
     };
 
-    positionRegions = function () {
+    locateRegions = function () {
         // reposition the node/circle
-        nodes.attr('transform', function (d) {
-            return 'translate(' + d.x + CONST_COMMA + d.y + ')';
-        });
-        return labels.style('left', function (d) {
-            return ((margin.left + d.x) - d.dx / 2) + 'px';
-        }).style('top', function (d) {
-            return ((margin.top + d.y) - d.dy / 2) + 'px';
-        });
+        _locateNodes();
+        return _locateLabels(labels);
     };
 
     chart = function (selection) {
@@ -282,6 +271,11 @@ window.BubbleCloud = function (config) {
             return d.title;
         }).call(force.drag).call(connectEvents);
 
+        nodeEnter.append('title')
+            .text(function (d) {
+                return d.title;
+            });
+
         nodeEnter.append('circle')
             .attr('class', 'node')
             .attr('r', function (d) {
@@ -322,7 +316,6 @@ window.BubbleCloud = function (config) {
         });
 
         labels.style('font-size', function (d) {
-            //TODO: decrease the font size if it's a merged node
             var fsize = Math.max(8, rScale(rValue(d) / 6) / 1.5);
             if (!!d.isMergedNode) {
                 fsize = Math.max(8, fsize / 1.2);
@@ -333,13 +326,17 @@ window.BubbleCloud = function (config) {
         labelEnter.append('div').attr('class', 'bubble-label-name').html(function (d) {
             var separator, wordNumEveryLine, words;
 
-            function _breedWordsToDisplay(words, wordNumEveryLine, separator) {
+            function _buildWordsToDisplay(words, wordNumEveryLine, separator) {
                 var connectSymbol, resultText = '', wordNum;
                 wordNum = words.length;
                 for (var i = 0; i < wordNum; i++) {
 
                     if ((i + 1) % wordNumEveryLine === 0) {
-                        connectSymbol = '<br>' + separator;
+                        if (separator === CONST_SPACE) {
+                            connectSymbol = '<br>';
+                        } else {
+                            connectSymbol = '<br>' + separator;
+                        }
                     } else {
                         connectSymbol = separator;
                     }
@@ -351,8 +348,10 @@ window.BubbleCloud = function (config) {
                 }
 
                 if (separator === CONST_COMMA) {
-                    resultText = resultText.replace(/\,\(\+\)/, CONST_SPACE + CONST_PLUS);
+                    resultText = resultText.replace(/\,\(\+\)/, CONST_PLUS);
                 }
+                //change space to html entity(non break line) of space, for ie
+                resultText = resultText.replace(/ /, '&nbsp;');
 
                 return resultText;
             }
@@ -374,7 +373,7 @@ window.BubbleCloud = function (config) {
             words = _getWordsArr(d.name, separator);
             wordNumEveryLine = _calWordNumEveryLine(words);
 
-            return _breedWordsToDisplay(words, wordNumEveryLine, separator);
+            return _buildWordsToDisplay(words, wordNumEveryLine, separator);
         });
         labelEnter.append('div').attr('class', 'bubble-label-value').text(function (d) {
             return d.count;
@@ -394,9 +393,8 @@ window.BubbleCloud = function (config) {
         labels.exit().remove();
     };
 
-
     mergeNodes = function (source, target) {
-        if (source.isSatelliteNode || target.isSatelliteNode) {
+        if (source.isSatelliteNode || target.isSatelliteNode || source.isShowAll || target.isShowAll) {
             return;
         }
         function addIdsToRemove(object, node, idsToRemove) {
@@ -418,14 +416,10 @@ window.BubbleCloud = function (config) {
         // Step 1: offload merged nodes from $data and put them aside
         var idsToRemove = [];
 
-        //var realSourceId = realIdValue(source);
-        //var realSourceId = source.id;
         var sourceIndex = _findIndex(data, source.id);
         var sourceNode = data.splice(sourceIndex, 1)[0];
         addIdsToRemove(source, sourceNode, idsToRemove);
 
-        //var realTargetId = realIdValue(target);
-        //var realTargetId = target.id;
         var targetIndex = _findIndex(data, target.id);
         var targetNode = data.splice(targetIndex, 1)[0];
         addIdsToRemove(target, targetNode, idsToRemove);
@@ -510,7 +504,6 @@ window.BubbleCloud = function (config) {
 
         dragSourceNode = null;
 
-        //_log('merge completed !!!');
     };
 
     function _findIndex(arr, id) {
@@ -531,9 +524,13 @@ window.BubbleCloud = function (config) {
 
     function _removeById(arr, id) {
         var index = _findIndex(arr, id);
+        //If find no element, then return
+        if (index === -1) {
+            return;
+        }
+
         arr.splice(index, 1);
     }
-
 
     /**
      * demerge the selected node and split into individual nodes
@@ -541,20 +538,14 @@ window.BubbleCloud = function (config) {
      */
     demergeNodes = function (d) {
 
-        //_log('rawNodes.length: ' + rawNodes.length);
 
         // Step 1: remove the merged node
-        //var dIndex = _findIndex(data, realIdValue(d));
-        //data.splice(dIndex, 1);
         _removeById(data, d.id);
 
         // Step 2: update the entry from $mergeMap
-        //var mIndex = _findIndex(mergeMap, d.mid);
-        //mergeMap.splice(mIndex, 1);
         _removeById(mergeMap, d.mid);
 
         // Step 3: add back all member nodes of $d
-        //var nodesToAdd = [];
         var memberIds = d.memberIds;
         for (var i = 0, length = memberIds.length; i < length; i++) {
 
@@ -595,101 +586,48 @@ window.BubbleCloud = function (config) {
         }
     };
 
-
     showSubRegions = function (node) {
         _log('show regions');
-        var region, index, nodeToAdd, point, angle = 0, mockCentralNode, rSmall,
-            //countForSatellite,
-            anglePadding = 4, rTraceCircle, centreAngle, maxArticles,
-            refs = node.refs;
-
-        //countForSatellite = 100;
+        var region, index, nodeToAdd, refs = node.refs;
 
         node.isShowAll = true;
-        node.name = node.name.replace(/\(\+\)/, CONST_MINUS);
+        if (!!refs && refs.length !== 0) {
+            node.name = node.name.replace(/\(\+\)/, CONST_MINUS);
+        }
 
         d3.select(model.placeholder + ' [bubble-label-id="' + node.id + '"] > div:first-child').text(function () {
             return node.name;
         });
 
-        // lock all the other nodes by disabling drag behavior temporarily
-        nodes.on('mousedown.drag', null).classed('fixed', true);
-        force.drag().on('dragstart', null).on('drag', null).on('dragend', null);
-
-        //hide all other bubble temporarily
-        nodes.classed('bubble-hide', function (d) {
-            return d !== node;
-        });
-        labels.classed('bubble-hide', function (d) {
-            return d !== node;
-        });
-
-        force.on('tick', null);
-        mockCentralNode = {};
-        $.extend(true, mockCentralNode, node);
-        mockCentralNode.id = node.id + '_' + 'mock';
-        mockCentralNode.x = width / 2;
-        mockCentralNode.y = height / 2;
-        mockCentralNode.selected = false;
-
-        //data.push(mockCentralNode);
-
-        maxArticles = _findMaxArticles(refs);
-        rSmall = rScale(maxArticles);
-
-        rTraceCircle = _getRTraceCircle(rSmall, node.forceR);
-
-        centreAngle = _getCentreAngle(rSmall, rTraceCircle);
+        PointGenerator.locateSubRegions(node);
 
         for (index = 0; index < refs.length; index++) {
             region = refs[index];
             region.id = node.id + '_' + index;
 
-            anglePadding = centreAngle / 10;
-            angle = angle + (centreAngle + anglePadding);
-
-            if (angle >= 360) {
-                angle = 0;
-                rTraceCircle = rTraceCircle + 2 * rSmall + 10;
-                centreAngle = _getCentreAngle(rSmall, rTraceCircle);
-                anglePadding = centreAngle / 10;
-                angle = angle + (centreAngle + anglePadding);
-            }
-
-            point = _getPoint(rTraceCircle, angle);
-
             nodeToAdd = {
                 title: region.tagName,
                 value: region.tagName,
                 name: region.tagName,
-                angle: angle,
+                angle: region.angle,
                 isSatelliteNode: true,
-                // sum up all nodes
                 count: parseInt(region.nbArticles),
-                //onlyToCalRadius: countForSatellite,
                 id: region.id,
-                // display name
                 type: CONST_REGION,
-                subType: 'country',
-                // the merged node gets selected if either source or target node was selected
+                subType: CONST_COUNTRY,
                 selected: region.selected,
-                // re-use the position of target node
-                x: node.x - point.x,
-                y: node.y - point.y,
-                dx: mockCentralNode.dx,
-                dy: mockCentralNode.dy
+                x: node.x - region.point.x,
+                y: node.y - region.point.y,
+                dx: node.dx,
+                dy: node.dy,
+                parent: node
             };
 
             data.push(nodeToAdd);
         }
 
         update();
-        positionRegions();
-        d3.select('#' + mockCentralNode.id).on('click', null);
-        d3.select('[bubble-label-id="' + mockCentralNode.id + '"]').on('click', null);
-        nodes.classed('fixed', false);
-        force.drag().on('dragstart', dragstart).on('drag', draging).on('dragend', dragend);
-        force.on('tick', tick);
+        locateRegions();
     };
 
     hideSubRegions = function (node) {
@@ -709,13 +647,6 @@ window.BubbleCloud = function (config) {
             region = refs[index];
             _removeById(data, node.id + '_' + index);
         }
-        //_removeById(data, node.id + '_' + 'mock');
-
-        nodes.classed('bubble-hide', false);
-        labels.classed('bubble-hide', false);
-        nodes.classed('fixed', false);
-        force.drag().on('dragstart', dragstart).on('drag', draging).on('dragend', dragend);
-        force.on('tick', tick);
 
         //remember the selected child region
         node.refs.forEach(function (d) {
@@ -733,75 +664,208 @@ window.BubbleCloud = function (config) {
         });
 
         update();
-
     };
 
-    function _findMaxArticles(arr){
-        var max = 0, articleNum;
-        for(var i =0 ; i < arr.length; i++){
-            articleNum = parseInt(arr[i].nbArticles);
-            if(max < articleNum){
-                max = articleNum;
-            }
+    PointGenerator = (function () {
+        var F;
+
+        F = function () {
+        };
+
+        function _sortByArticles(arr) {
+            arr.sort(function (a, b) {
+                return parseInt(a.nbArticles) < parseInt(b.nbArticles);
+            });
         }
-        return max;
-    }
 
-    function _getPoint(r, angle) {
-        var RAD = Math.PI / 180;
-        var rst = {};
-        rst.x = r * Math.cos(angle * RAD);
-        rst.y = r * Math.sin(angle * RAD);
-        return rst;
-    }
+        function _findMaxArticles(arr) {
+            var max = 0, articleNum;
+            for (var i = 0; i < arr.length; i++) {
+                articleNum = parseInt(arr[i].nbArticles);
+                if (max < articleNum) {
+                    max = articleNum;
+                }
+            }
+            return max;
+        }
 
-    /**
-     * Get angle at the centre.
-     *
-     * @param rSmall
-     * the radius of small circle
-     * @param rTraceCircle
-     * rSmall + rLarge + padding
-     * @returns {number}
-     * @private
-     */
-    function _getCentreAngle(rSmall, rTraceCircle) {
+        function _removeByIndex(arr, index) {
+            if (index === -1) {
+                return;
+            }
+            arr.splice(index, 1);
+        }
+
         /**
-         * Get distance from the chord to the centre
+         * Get point at the circle's arc based on polar coordinate.
          *
-         * rTraceCircle is the radius of small circle plus the radius of large circle and plus the padding
+         * @param r
+         * The radius of circle
+         *
+         * @param angle
+         *
+         * The angle of radian
+         * @returns {{}}
+         * @private
+         */
+        function _getPoint(r, angle) {
+            var radianOf1 = Math.PI / 180;
+            var result = {};
+            result.x = r * Math.cos(angle * radianOf1);
+            result.y = r * Math.sin(angle * radianOf1);
+            return result;
+        }
+
+        /**
+         * Get angle of correspondent centre of trace circle.
+         *
+         * @param rSatellite
+         * The radius of satellite circle
+         * @param rTraceCircle
+         * The radius of trace circle
+         * @returns {number}
+         * @private
+         */
+        function _getCentreAngleOfTraceCircle(rSatellite, rTraceCircle) {
+
+            var distanceToChordTraceCentre = _getDistanceIntersectingChordToCentre(rSatellite, rTraceCircle);
+            return _getCentreAngle(distanceToChordTraceCentre, rTraceCircle);
+        }
+
+        /**
+         * Get distance from the intersecting chord to the centre of trace circle.
+         *
+         * Scenario: Trace circle's arc pass the centre of circle.
+         * i.e. A circle's centre is on trace circle's arc
+         *
+         *
+         * rTraceCircle is the radius of trace circle
          *
          * a + b = rTraceCircle;
          *
          * a*a + x*x = rTraceCircle*rTraceCircle;
          *
-         * b*b + x*x = rSmall*rSmall;
+         * b*b + x*x = rSatellite*rSatellite;
          *
-         * x is chord length, a is distance from the chord to the centre of actual circle,
-         * b is distance from the chord to the centre of small circle
+         * x is half of chord length,
+         * The chord is in the satellite circle.
          *
-         * @param rSmall
-         * the radius of small circle
+         * a is distance from the chord to the centre of trace circle,
+         * b is distance from the chord to the centre of satellite circle
+         *
+         * @param rSatellite
+         * The radius of satellite circle
          * @param rTraceCircle
-         * rSmall + rLarge + padding
+         * The radius of trace circle
          * @returns {number}
          * distance from the chord to the centre
          * @private
          */
-        function _getDistanceChordToCentre(rSmall, rTraceCircle) {
-            return rTraceCircle - Math.pow(rSmall, 2) / (2 * rTraceCircle);
+        function _getDistanceIntersectingChordToCentre(rSatellite, rTraceCircle) {
+            return rTraceCircle - Math.pow(rSatellite, 2) / (2 * rTraceCircle);
         }
 
-        var distanceChordToCentre;
+        /**
+         * Get centre angle of trace centre of the intersecting chord.
+         *
+         * @param distanceToChordTraceCentre
+         * Distance between intersecting chord to trace circle's centre.
+         *
+         * @param rTraceCircle
+         * The radius of trace circle.
+         *
+         * @returns {number}
+         * @private
+         */
+        function _getCentreAngle(distanceToChordTraceCentre, rTraceCircle) {
+            return Math.acos(distanceToChordTraceCentre / rTraceCircle) * 180 / Math.PI * 2;
+        }
 
-        distanceChordToCentre = _getDistanceChordToCentre(rSmall, rTraceCircle);
-        return Math.acos(distanceChordToCentre / rTraceCircle) * 180 / Math.PI * 2;
-    }
+        /**
+         * Get radius of the trace circle,
+         * trace circle is a circle that sub region's centre will locate on its arc.
+         *
+         * @param rBase
+         * The radius of the base circle.
+         * @param rAdded
+         * The radius of a circle on the trace circle.
+         * @param padding
+         * If you need, set it.
+         * @returns the radius of the trace circle
+         * @private
+         */
+        function _getRadiusTraceCircle(rBase, rAdded, padding) {
+            padding = padding || 0;
+            return rBase + rAdded + padding;
+        }
 
-    function _getRTraceCircle(rSmall, rLarge) {
-        var padding = 10;
-        return rSmall + rLarge + padding;
-    }
+        function _getAngle(angle, centreAngle, anglePadding) {
+            return angle + (centreAngle + anglePadding);
+        }
+
+        function _getAnglePadding(centreAngle, divide) {
+            if (divide === undefined) {
+                divide = 1 / 10;
+            }
+            return centreAngle * divide;
+        }
+
+        /**
+         * Set point and angle to sub region.
+         *
+         * @param node
+         */
+        F.locateSubRegions = function (node) {
+            var angleSum = 0, rMaxSubRegion, region, rSubRegion,
+                anglePadding, rTraceCircle, centreAngle, maxArticles, refs = node.refs, refsCopy;
+
+            //sort sub regions by articles
+            _sortByArticles(refs);
+            //copy sub regions arr for calculating left sub regions' max article
+            refsCopy = [].concat(refs);
+            maxArticles = _findMaxArticles(refsCopy);
+            rMaxSubRegion = rScale(maxArticles);
+
+            //Simply use max articles to calculate the radius of trace circle.
+            rTraceCircle = _getRadiusTraceCircle(node.forceR, rMaxSubRegion);
+
+            for (var index = 0; index < refs.length; index++) {
+                region = refs[index];
+                rSubRegion = rScale(region.nbArticles);
+                region.id = node.id + '_' + index;
+
+                //Use radius of each sub region to calculate the centre angle
+                centreAngle = _getCentreAngleOfTraceCircle(rSubRegion, rTraceCircle);
+                anglePadding = _getAnglePadding(centreAngle, 0);
+                angleSum = _getAngle(angleSum, centreAngle, anglePadding);
+
+                //If Overflow 360, create a new trace circle to draw satellite circle and recalculate the angle and angle padding.
+                if (angleSum > 360) {
+                    angleSum = 0;
+
+                    //Simply use max articles to calculate the radius of trace circle.
+                    //The radius of max sub region is used previous trace circle.
+                    rTraceCircle = _getRadiusTraceCircle(rTraceCircle, 2 * rMaxSubRegion, -rMaxSubRegion);
+                    //Use radius of each sub region to calculate the centre angle
+                    centreAngle = _getCentreAngleOfTraceCircle(rSubRegion, rTraceCircle);
+                    anglePadding = _getAnglePadding(centreAngle, 0);
+                    angleSum = _getAngle(angleSum, centreAngle, anglePadding);
+
+                    //recalculate max articles of left sub regions for next new trace circle.
+                    maxArticles = _findMaxArticles(refsCopy);
+                    rMaxSubRegion = rScale(maxArticles);
+                }
+
+                _removeByIndex(refsCopy, index);
+
+                //set point and angle
+                region.angle = angleSum;
+                region.point = _getPoint(rTraceCircle, angleSum);
+            }
+        };
+
+        return F;
+    })();
 
     gravity = function (alpha) {
         var ax, ay, cx, cy;
@@ -810,15 +874,44 @@ window.BubbleCloud = function (config) {
         ax = alpha / 8;
         ay = alpha;
         return function (d) {
+
+            if (d.subType === CONST_COUNTRY) {
+                return;
+            }
             d.x += (cx - d.x) * ax;
             return d.y += (cy - d.y) * ay;
         };
     };
+
+    function moveToParent(alpha) {
+        var ax, ay;
+        ax = alpha;
+        ay = alpha;
+
+        return function (d) {
+            if (d.subType === CONST_COUNTRY) {
+
+                d.x += (d.parent.x - d.x) * ax;
+                d.y += (d.parent.y - d.y) * ay;
+            }
+
+            return;
+        };
+    }
+
     collide = function (jitter) {
         return function (d) {
             return data.forEach(function (d2) {
                 var distance, minDistance, moveX, moveY, x, y;
                 if (d !== d2) {
+
+                    if ((d === d2.parent && d2.subType === CONST_COUNTRY) ||
+                        (d2 === d.parent && d.subType === CONST_COUNTRY) ||
+                        (d.subType === CONST_COUNTRY && d2.subType === CONST_COUNTRY && d.parent === d2.parent)) {
+                        collisionPadding = 0;
+                    } else {
+                        collisionPadding = 15;
+                    }
                     x = d.x - d2.x;
                     y = d.y - d2.y;
                     distance = Math.sqrt(x * x + y * y);
@@ -842,7 +935,7 @@ window.BubbleCloud = function (config) {
      */
     collideV2 = function () {
 
-        //_log('entering collideV2');
+        _log('entering collideV2');
 
         return function (d) {
 
@@ -860,7 +953,7 @@ window.BubbleCloud = function (config) {
                             if (isActiveDragEvent && !isMergeDone) {
                                 minDistanceJoin = Math.max(d.forceR, d2.forceR) + collisionPadding;
 
-                                //_log('dragging: ' + dragSourceNode.tagName);
+                                _log('dragging: ' + dragSourceNode.tagName);
 
                                 var dragNodeId = dragSourceNode.id;
 
@@ -872,8 +965,7 @@ window.BubbleCloud = function (config) {
 
                                         isMergePending = true;
 
-                                        //_log('about to merge $' + dragSourceNode.tagName + '$ into $' + dropTargetNode.tagName + '$');
-                                        //return mergeNodes(dragSourceNode, dropTargetNode);
+                                        _log('about to merge $' + dragSourceNode.tagName + '$ into $' + dropTargetNode.tagName + '$');
                                     }
                                 }
                             }
@@ -933,8 +1025,8 @@ window.BubbleCloud = function (config) {
             selectedNodes.splice(index, 1);
         }
 
-        //_log('d.selected: ' + d.selected);
-        //_log('selectedNodes.length: ' + selectedNodes.length);
+        _log('d.selected: ' + d.selected);
+        _log('selectedNodes.length: ' + selectedNodes.length);
 
         updateActive(d.id, d.selected);
 
@@ -964,7 +1056,7 @@ window.BubbleCloud = function (config) {
 
     dragstart = function (d) {
 
-        //_log('drag start...');
+        _log('drag start...');
         isActiveDragEvent = true;
         isMergeDone = false;
         isMergePending = false;
@@ -978,11 +1070,10 @@ window.BubbleCloud = function (config) {
         prevNodeLoc.dx = d.dx;
         prevNodeLoc.dy = d.dy;
 
-        //_log('save current position [x: ' + prevNodeLoc.x + ', y: ' + prevNodeLoc.y);
-        //_log('set dragSourceNode to ' + dragSourceNode.tagName);
+        _log('save current position [x: ' + prevNodeLoc.x + ', y: ' + prevNodeLoc.y);
+        _log('set dragSourceNode to ' + dragSourceNode.tagName);
 
         // lock all the other nodes by disabling drag behavior temporarily
-        //nodes.on('mousedown.drag', null).classed('fixed', d.fixed = true);
         nodes.on('mousedown.drag', null).classed('fixed', true);
         //
         d3.select(this).call(drag);
@@ -996,32 +1087,22 @@ window.BubbleCloud = function (config) {
         var nodeId = d3.select(this).attr('bubble-label-id') || d3.select(this.parentNode).attr('id');
 
         // sync the label position
-        d3.select(model.placeholder + ' [bubble-label-id=' + nodeId + ']').style('left', function (d) {
-            return ((margin.left + d.x) - d.dx / 2) + 'px';
-        }).style('top', function (d) {
-            return ((margin.top + d.y) - d.dy / 2) + 'px';
-        });
+        _locateLabels(d3.select(model.placeholder + ' [bubble-label-id=' + nodeId + ']'));
     };
 
     dragend = function () {
 
         // unlock all nodes
-        //nodes.call(drag).classed('fixed', d.fixed = false);
         nodes.call(drag).classed('fixed', false);
 
         // lock $dropTargetNode
         if (!!dropTargetNode) {
-            //nodes.select('#' + idValue(dropTargetNode)).classed('fixed', dropTargetNode.fixed = true);
             nodes.select('#' + dropTargetNode.id).classed('fixed', true);
         }
 
-        //dragSourceNode = null;
-
         force.on('tick', null);
 
-
         if (!!isMergePending) {
-
 
             mergeNodes(dragSourceNode, dropTargetNode);
 
@@ -1029,7 +1110,7 @@ window.BubbleCloud = function (config) {
 
             // starts a transition
             d3.select('#' + prevNodeLoc.id).attr('transform', function () {
-                //_log('reposition to [x: ' + prevNodeLoc.x + ', y: ' + prevNodeLoc.y);
+                _log('reposition to [x: ' + prevNodeLoc.x + ', y: ' + prevNodeLoc.y);
                 return 'translate(' + prevNodeLoc.x + CONST_COMMA + prevNodeLoc.y + ')';
             });
 
@@ -1041,13 +1122,9 @@ window.BubbleCloud = function (config) {
             });
         }
 
-        //setTimeout(function () {
-        //    force.on('tick', tick);
-        //}, 100);
-
         force.on('tick', tick);
 
-        //_log('drag end...');
+        _log('drag end...');
     };
 
     /**
@@ -1075,15 +1152,9 @@ window.BubbleCloud = function (config) {
         return false;
     };
 
-    /**
-     *
-     * @param d
-     * @returns {boolean}
-     */
     mouseout = function () {
 
         // remove all hover styles
-        //nodes.classed('bubble-masked-hover', false);
         nodes.classed('bubble-hover', false);
 
         return false;
@@ -1094,12 +1165,12 @@ window.BubbleCloud = function (config) {
      */
     updateSelections = function () {
 
-        //_log('update selection');
+        _log('update selection');
 
         var selectionsDOM = [];
 
         selectedNodes.forEach(function (d) {
-            var itemDOM = chart.breedTagItem(d);
+            var itemDOM = chart.buildTagItem(d);
             selectionsDOM.push(itemDOM);
         });
 
@@ -1109,12 +1180,10 @@ window.BubbleCloud = function (config) {
             if ($searchMenu.hasClass('hidden')) {
                 $searchMenu.removeClass('hidden');
             }
-
             $searchMenu.show();
         } else {
             $searchMenu.hide();
         }
-
 
         d3.select('#searchTags').html(selectionsDOM.join('')).selectAll('.selected-tag').on('click', function () {
             var nodeId = d3.select(this).attr('tag-id');
@@ -1160,7 +1229,7 @@ window.BubbleCloud = function (config) {
         rValue = _;
         return chart;
     };
-    chart.breedTagItem = function (d) {
+    chart.buildTagItem = function (d) {
         return '<div> <i class="fa ' + chart.bubbleIcon(d) + '"></i> ' +
             '<input class="selected-tag ' + chart.bubbleColor(d) + '" type="button" ' +
             'tag-type="' + d.type + '" tag-sub-type="' + d.subType + '" tag-value="' + d.value +
@@ -1193,6 +1262,9 @@ window.BubbleCloud = function (config) {
 
     chart.deselectAll = function () {
 
+        $('#searchTags').empty();
+        $('#searchMenu').hide();
+
         selectedNodes = [];
         // deselect all nodes on the chart
         d3.selectAll('a.bubble-selected').classed('bubble-selected', false);
@@ -1212,6 +1284,7 @@ var root = typeof exports !== 'undefined' && exports !== null ? exports : this;
 root.plotData = function (selector, data, plot) {
     return d3.select(selector).datum(data).call(plot);
 };
+
 
 
 d3.selection.prototype.first = function() {
